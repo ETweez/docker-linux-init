@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 echo "---"
-read -p "Project name? [MYMAGENTO2] " project_name
+read -p "Project name? [mymagento2] " project_name
 read -p "PHP version? [7.0] " php_version
 echo "---"
 if [ "$project_name" == "" ]; then
-    project_name="MYMAGENTO2"
+    project_name="mymagento2"
 fi
 if [ "$php_version" == "" ]; then
 	php_version="7.0"
