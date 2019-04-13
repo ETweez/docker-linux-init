@@ -11,6 +11,8 @@ if [ "$php_version" == "" ]; then
 fi
 
 domain=$(echo "$project_name"  | sed 's/[^[[:alnum:]]]*//g')
+
+
 read -p "Do you want to create http://$domain.local? [n] " -n 1 -r create_domain
 if [ "$create_domain" == "y" ]; then
 
