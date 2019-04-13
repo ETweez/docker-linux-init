@@ -17,3 +17,15 @@ mv docker-linux-m2-v2 $project_name;
 cd $project_name;
 mkdir src;
 ./init $project_name $php_version;
+
+echo "---"
+read -p "Do you want to install Magento? [n] " -n 1 -r install_magento
+if [ "$install_magento" == "y" ]; then
+    read -p "Magento Version to install [2.3.1] " magento_version
+    rm -rf src/*
+    
+    if [ "$magento_version" == "" ]; then
+	magento_version="2.3.1"
+    fi
+    docker-compose exec --user www-data "apache" install-magento2 $magento_version
+fi 
