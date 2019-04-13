@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
+echo "---"
 read -p "Project name? [MYMAGENTO2] " project_name
 read -p "PHP version? [7.0] " php_version
+echo "---"
 if [ "$project_name" == "" ]; then
     project_name="MYMAGENTO2"
 fi
