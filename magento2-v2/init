@@ -36,9 +36,6 @@ if [ "$create_domain" == "y" ]; then
 	sed -i '' -e "s/\#  ServerName dev/ServerName $domain/g" $project_name/.docker/config/magento.ssl.conf.dist;
 	sed -i '' -e "s/\#  ServerAlias www.dev/ServerAlias $domain/g" $project_name/.docker/config/magento.ssl.conf.dist;
 	sed -i '' -e "s/localhost/$domain\.local/g" $project_name/start;
-
-	sudo echo "$server_ip  $domain.local" >> /etc/hosts
-	sudo echo "$server_ip  www.$domain.local" >> /etc/hosts
 fi 
 
 cd $project_name;
@@ -60,4 +57,7 @@ if [ "$install_magento" == "y" ]; then
     docker-compose exec --user root "apache" install-magento2 $magento_version
 fi 
 echo " "
+
+sudo bash -c 'echo -e "'$server_ip'  '$domain'.local" >> /etc/hosts'
+sudo bash -c 'echo -e "'$server_ip'  www.$domain.local" >> /etc/hosts'
 
