@@ -15,4 +15,5 @@ echo "-----------"
 git clone https://github.com/redstage/docker-linux-m2-v2.git;
 mv docker-linux-m2-v2 $project_name;
 cd $project_name;
+mkdir src;
 ./init $project_name $php_version;
