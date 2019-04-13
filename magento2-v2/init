@@ -21,11 +21,13 @@ mkdir src;
 echo "---"
 read -p "Do you want to install Magento? [n] " -n 1 -r install_magento
 if [ "$install_magento" == "y" ]; then
+    echo "---"
     read -p "Magento Version to install [2.3.1] " magento_version
+    echo "---"
     rm -rf src/*
     
     if [ "$magento_version" == "" ]; then
 	magento_version="2.3.1"
     fi
-    docker-compose exec --user www-data "apache" install-magento2 $magento_version
+    docker-compose exec --user root "apache" install-magento2 $magento_version
 fi 
