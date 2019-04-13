@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+[ "$UID" -eq 0 ] || exec sudo bash "$0" "$@"
 echo "---"
 read -p "Project name? [mymagento2] " project_name
 read -p "PHP version? [7.0] " php_version
@@ -27,17 +28,22 @@ echo "Installing project: $project_name [PHP $php_version]"
 echo "-----------"
 git clone https://github.com/redstage/docker-linux-m2-v2.git;
 mv docker-linux-m2-v2 $project_name;
-cd $project_name;
-mkdir src;
+
 
 if [ "$create_domain" == "y" ]; then
-	sed -i '' -e "s/\#  ServerName dev/$domain/g" .docker/config/magento.conf;
-	sed -i '' -e "s/\#  ServerAlias www.dev/$domain/g" .docker/config/magento.conf;
-	sed -i '' -e "s/\#  ServerName dev/$domain/g" .docker/config/magento.ssl.conf;
-	sed -i '' -e "s/\#  ServerAlias www.dev/$domain/g" .docker/config/magento.ssl.conf;	
+	sleep 1
+	sed -i '' -e "s/\#  ServerName dev/ServerName $domain/g" $project_name/.docker/config/magento.conf.dist;
+	sed -i '' -e "s/\#  ServerAlias www.dev/ServerAlias $domain/g" $project_name/.docker/config/magento.conf.dist;
+	sed -i '' -e "s/\#  ServerName dev/ServerName $domain/g" $project_name/.docker/config/magento.ssl.conf.dist;
+	sed -i '' -e "s/\#  ServerAlias www.dev/ServerAlias $domain/g" $project_name/.docker/config/magento.ssl.conf.dist;
+	sed -i '' -e "s/localhost/$domain\.local/g" $project_name/start;
+
 	sudo echo "$server_ip  $domain.local" >> /etc/hosts
 	sudo echo "$server_ip  www.$domain.local" >> /etc/hosts
 fi 
+
+cd $project_name;
+mkdir src;
 
 ./init $project_name $php_version;
 
@@ -54,3 +60,5 @@ if [ "$install_magento" == "y" ]; then
     fi
     docker-compose exec --user root "apache" install-magento2 $magento_version
 fi 
+echo " "
+
